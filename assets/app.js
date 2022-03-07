@@ -20,7 +20,7 @@
         const prodList = document.createElement('ul');
         prodList.className = 'product-list';
         // logic to render a single item
-        for (const prod of this.product) {
+        for (const prod of this.products) {
             const prodEl = document.createElement('li');
             prodEl.className = 'product-item';
             prodEl.innerHTML = `
@@ -34,8 +34,11 @@
             </div>
             </div>
             `;
+            prodList.append(prodEl);
         }
-        renderHook.apeend();
+        renderHook.append(prodList);
     }
  }; 
 
+
+ productList.render();
