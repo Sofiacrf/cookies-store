@@ -1,44 +1,77 @@
-// store products in object
- const productList = {
-    products:  [
-        {
-            title: 'Picture 1',
-            imageUrl: 'https://scontent.fmex11-1.fna.fbcdn.net/v/t1.6435-9/180566207_10225726551050510_2431552693953559645_n.jpg?_nc_cat=107&ccb=1-5&_nc_sid=19026a&_nc_eui2=AeGt4NIExHnNJTmd51Brkc01CMMI5-k7VxUIwwjn6TtXFbKpQ3F6ABN-osXFMGfjzrI&_nc_ohc=xuq27OVB7u0AX92iGqS&tn=89qhMx2t13NgT0ce&_nc_ht=scontent.fmex11-1.fna&oh=00_AT9B_sZCucqNLfL6XiiCeR0-8bl9luO4I59RiKJ6VAv7hg&oe=624CB98C',
-            price: 500.00,
-            description: 'flores'
-        }, 
-        {
-            title: 'Picture 2',
-            imageUrl: 'https://scontent.fmex11-1.fna.fbcdn.net/v/t39.30808-6/274242102_10227479450671905_3664816574059744825_n.jpg?_nc_cat=111&ccb=1-5&_nc_sid=e3f864&_nc_eui2=AeH8wX0cUGiIeD17-Mc_Tkxpdr-YNa3Mldx2v5g1rcyV3BP9AwsSG9QwXlZjZg8BvZw&_nc_ohc=GRHDLrqutyYAX8yqqZa&_nc_ht=scontent.fmex11-1.fna&oh=00_AT8rYNKPzHv0Ca1zcyEy59zIMDfIm6chRbfSgEi4xF7E6g&oe=622AE4CA',
-            price: 550.00,
-            description: 'city picture'
-        },
-    ],
-    // Added the method to render the list of products
-    render() {
-        const renderHook = document.getElementById('app');
-        const prodList = document.createElement('ul');
-        prodList.className = 'product-list';
-        // logic to render a single item
-        for (const prod of this.products) {
-            const prodEl = document.createElement('li');
-            prodEl.className = 'product-item';
-            prodEl.innerHTML = `
-            <div> 
-            <img src="${prod.imageUrl}" alt ="${prod.title}">
-            <div class="product-item_content"> 
-            <h2>${prod.title}</h2>
-            <h3>${prod.price}</h3>
-            <p>${prod.description}</p>
-            <button>Add to cart</button>
-            </div>
-            </div>
-            `;
-            prodList.append(prodEl);
-        }
-        renderHook.append(prodList);
+class Product {
+    // title = 'DEFAULT';
+    // imageUrl;
+    // description;
+    // price;
+  
+    constructor(title, image, desc, price) {
+      this.title = title;
+      this.imageUrl = image;
+      this.description = desc;
+      this.price = price;
     }
- }; 
-
-
- productList.render();
+  }
+  
+  class ProductItem {
+    constructor(product) {
+      this.product = product;
+    }
+  
+    addToCart() {
+      console.log('Adding product to cart...');
+      console.log(this.product);
+    }
+  
+    render() {
+      const prodEl = document.createElement('li');
+      prodEl.className = 'product-item';
+      prodEl.innerHTML = `
+          <div>
+            <img src="${this.product.imageUrl}" alt="${this.product.title}" >
+            <div class="product-item__content">
+              <h2>${this.product.title}</h2>
+              <h3>\$${this.product.price}</h3>
+              <p>${this.product.description}</p>
+              <button>Add to Cart</button>
+            </div>
+          </div>
+        `;
+      const addCartButton = prodEl.querySelector('button');
+      addCartButton.addEventListener('click', this.addToCart.bind(this));
+      return prodEl;
+    }
+  }
+  
+  class ProductList {
+    products = [
+      new Product(
+        'A Pillow',
+        'https://www.maxpixel.net/static/photo/2x/Soft-Pillow-Green-Decoration-Deco-Snuggle-1241878.jpg',
+        'A soft pillow!',
+        19.99
+      ),
+      new Product(
+        'A Carpet',
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Ardabil_Carpet.jpg/397px-Ardabil_Carpet.jpg',
+        'A carpet which you might like - or not.',
+        89.99
+      )
+    ];
+  
+    constructor() {}
+  
+    render() {
+      const renderHook = document.getElementById('app');
+      const prodList = document.createElement('ul');
+      prodList.className = 'product-list';
+      for (const prod of this.products) {
+        const productItem = new ProductItem(prod);
+        const prodEl = productItem.render();
+        prodList.append(prodEl);
+      }
+      renderHook.append(prodList);
+    }
+  }
+  
+  const productList = new ProductList();
+  productList.render();
